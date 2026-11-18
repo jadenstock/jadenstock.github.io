@@ -1,0 +1,6 @@
+# The site look: "Editorial" (inspired by Isabella Velasquez).
+# Serif body, dark top bar, red accent, thumbnails. Fonts: Space Grotesk headings + Newsreader body.
+format:
+  html:
+    theme: themes/editorial.scss
+    include-in-header: themes/editorial-fonts.html

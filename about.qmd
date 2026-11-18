@@ -1,0 +1,11 @@
+---
+title: "About"
+toc: false
+---
+
+I'm an applied AI researcher and engineer in Seattle. I design LLM-based and agentic systems for scientific domains, usually on open-ended problems where you only find out what works by running real experiments.
+
+I currently work at Labcorp Genetics (formerly Invitae), building production agentic systems for clinical research workflows. That includes a biomedical research agent that draws on a dozen public data sources and a system that pulls phenotype terms out of clinical text.
+Before that I worked on data and ML systems at Amazon and Google, and did research internships at Adaptive Biotechnologies and the Allen Institute for AI. The older talks on this site come from my time with the UW CS theory group.
+
+I'm most interested in problems at the frontier of applied AI where both research depth and systems thinking matter. On the side I build things like deep-research agents, a whittling planner and game-playing bots. You can find them on the [Links](links.qmd) page, along with my [GitHub](https://github.com/jadenstock) and [LinkedIn](https://www.linkedin.com/in/jaden-stock-46071b7a/).

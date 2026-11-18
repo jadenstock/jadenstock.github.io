@@ -1,0 +1,4 @@
+# Direction A "Quiet": inspired by Leonie Monigatti. Warm paper background, light sans, date-first list.
+format:
+  html:
+    theme: themes/quiet.scss

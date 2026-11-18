@@ -1,0 +1,11 @@
+---
+# Copy this folder to posts/<your-slug>/ (underscore folders are ignored by Quarto, so this never publishes).
+title: "Post title"
+description: "One sentence shown under the title in the feed."
+date: 2026-01-01
+categories: [essay]
+image: cover.png   # shows in the feed. Drop a cover.png / cover.jpg in this folder. 1200x800 (3:2) is ideal.
+draft: true        # remove when ready to publish
+---
+
+Write here.

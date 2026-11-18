@@ -1,0 +1,151 @@
+---
+title: "Brascamp-Lieb Inequalities"
+description: "A talk to the UW CS theory group on Avi Wigderson's operator-theory approach to Brascamp-Lieb inequalities."
+date: 2017-08-04
+image: cover.png
+categories: [talks, math]
+---
+
+*Originally published on the [Infinite Ink Well blog](https://infiniteinkwellblog.wordpress.com/2017/08/11/brascamp-lieb-inequalities/).*
+
+What follows is essentially a transcription of a talk I gave to the UW CS theory group on 8/4/17. It is based on this recent [paper](https://arxiv.org/abs/1607.06711) of Avi Wigderson applying ideas from operator theory to the classic mathematical problem of Brascamp-Lieb inequalities.
+
+## Introduction
+
+We are given $m$ linear transformations $B = (B_{1}, \cdots, B_{m})$ where $B_{i}:\mathbb{R}^{n} \to \mathbb{R}^{n_{j}}$ and a vector of exponents $P = (p_{1}, \cdots, p_{m})$ where $p_{i}\geqslant 0$ for all $i$. The tuple $(B,P)$ is called a *Brascamp-Lieb datum*. A Brascamp-Lieb inequality corresponding to this datum is an inequality of the form
+
+$$
+\int_{\mathbb{R}^{n}}\prod_{j=1}^{m}\left(f_{j}(B_{j}x)\right)^{p_{j}}\,dx\leqslant C\prod_{j=1}^{m}\left(\int_{x_{j}\in \mathbb{R}^{n_{j}}}f_{j}(x_{j})\,dx_{j}\right)^{p_{j}} \tag{1}
+$$
+
+where $f = (f_{1}, \cdots, f_{m})$ are all non-negative and measurable functions from $\mathbb{R}^{n_{j}} \to \mathbb{R}$. Clearly, this inequality cannot hold for all $B,P,$ and $f$. The constant $C$ will depend on $B,P,f$. We will let $C = BL(B,P,f)$ be the smallest constant such that (1) holds. Of course, it may be that $C=\infty$. Next, we will define $\displaystyle BL(B,P) = \sup_{f: f_{j}\geqslant 0}\left[BL(B,P,f)\right]$ to be the *Brascamp-Lieb constant* corresponding to the datum $(B,P)$. So there are now two questions. 1. given $(B,P)$, is $BL(B,P)<\infty$? If it is then the datum $(B,p)$ is said to be *feasible*. 2.) If $(B,p)$ is feasible then what is $BL(B,P)$?
+
+## Examples
+
+We are now ready to see some examples of Brascamp-Lieb inequalities which you have probably seen before. Recall that the $L_{p}(\mathbb{R}^{n})$ norm is defined as $\displaystyle \|f\|_{p} = \left(\int_{\mathbb{R}^{n}}f^{p}\,dx\right)^{1/p}.$
+
+### Holder’s Inequality
+
+Holder’s inequality says that $\|fg\|_{1}\leqslant \|f\|_{1/p}\|g\|_{1/q}$ when $p+q=1$ (Cauchy Schwarzs is a special case when $p=q=\frac{1}{2}$). Or in it’s most general form it says that $\|\prod_{k=1}^{n}f_{k}\|_{1}\leqslant \prod_{k=1}^{n}\|f_{k}\|_{1/p_{i}}$ when $\sum_{i}p_{i}=1$. Here the transformations $B_{i}$ are just the identity maps and Holder’s inequality tells us that $BL(B,P)=1$ when $\sum_{i}p_{i}=1$ and $BL(B,P) = \infty$ otherwise (Note that you have to let $f_{j}\gets f_{j}^{1/p_{i}}$ to get equation (1) to be in the form of Holder’s inequality).
+
+### Loomis-Whitney Inequality
+
+It is a fairly obvious observation that if we want to upper bound the volume of a bounded shape in $\mathbb{R}^{2}$ we can simply take the volume of the smallest box containing our shape. To make that formal let $\pi_{i}(x)$ denote (counter-intuitively) the projection of $x$ onto every dimension other than the $i$-th one. So $\pi_{i}(x) = (x_{1}, \cdots, x_{i-1}, x_{i+1}, \cdots, x_{n})$. So we can easily see that if $E$ is some bounded subset of $\mathbf{R}^{2}$ then $|E|\leqslant |\pi_{1}(E)||\pi_{2}(E)|$ (Here I am using $|\cdot|$ to denote volume, forgive the abuse of notation). In $d$ dimensions the Loomis-Whitney inequality says that $\displaystyle \int_{\mathbb{R}^{d}}\prod_{j=1}^{d}f_{j}(\pi_{j}(x))^{1/(d-1)}\,dx \leqslant \prod_{j=1}^{d}\left(\int_{\mathbb{R}^{d-1}}f_{j}(\hat{x}_{j})\,d\hat{x}_{j}\right).$ We can see that this is a special case of Brascamp-Lieb with $B_{i}:\mathbb{R}^{d}\to \mathbf{e}_{i}^{\perp}$ and $P=(\frac{1}{d-1}, \cdots, \frac{1}{d-1})$. In particular if we take $f_{j} = \mathbf{1}_{\pi_{j}}(E)$ then it is not too hard to see that this says that for some measurable $E\subset \mathbb{R}^{d}$ we have $\displaystyle \left|E\right| \leqslant \prod_{j=1}^{d}\left|\pi_{j}(E)\right|^{1/(d-1)}.$ This is an upper bound on the volume of a $d$-dimensional shape in terms of it’s $d-1$ dimensional projections, neat!
+
+### Sharp Young Inequality
+
+Now imagine that instead of projecting onto coordinate axis only, we also had one more projection. In particular, this inequality says that if we are working in $\mathbb{R}^{2}$ and we have $B_{1}(x,y)=x, B_{2}(x,y)=y$, and $B_{3}(x,y)=x-y$ and $p_{1},p_{2},p_{3}$ are such that $p_{1}+p_{2}+p_{3}=2$ with $p_{i}\geqslant 0$ then
+
+$$
+BL(B,P) = \frac{\prod_{j=1}^{3}(1-p_{j})^{1-p_{j}}}{\prod_{j=1}^{3}p_{j}^{p_{j}}} .
+$$
+
+This is also sometimes called Young’s convolution identity.
+
+**Remark:** We have only seen three examples and we can already start to get an idea for how complex this mathematical object is. In the case of Holder’s inequality and the Sharp-Young inequality we have loose constraints on the $P$ vector, but in the Loomis-Whiteny inequality $P$ is a single point in $\mathbb{R}^{m}$. Moreover, in the Holder and Loomis-Whitney inequalities we have that $BL(B,p)=1$ but in the Sharp-Young inequality it is some strange constant. The point here is that once you are given the transformations $B$, it is not at all clear what the conditions on $P$ are such that $(B,P)$ is feasible, and it is even less clear what $BP(B,P)$ should be!
+
+## Some Important Results
+
+Now I will show you two results that should indicate to you how complex this mathematical structure is.
+
+**Theorem \[BCCT08\]:** The datum $(\mathbf{B}, \mathbf{p})$ is feasible iff the following hold:
+
+1.  $n = \sum_{i}n_{i}p_{i}$
+2.  $\text{dim}(V) \leqslant \sum_{j}p_{j}\text{dim}(B_{j}V)$ holds for all subspaces $V$ of $\mathbb{R}^{n}$.
+
+At first glance it may seem like this second condition encodes infinitely many inequalities. Notice, however, that $\text{dim}(B_{j}V) \in [n]$, so really there can only be at most exponentially many inequalities here. Still, exponentially many inequalities is a force to be reckoned with. These two constraints define a polytope in $\mathbb{R}^{m}$ which we will denote by $\mathbf{P}_{B}$, known as the *Brascamp-Lieb Polytope*. The problem of determining feasibility of $(B,p)$ is now just a problem of determining if $P\in \mathbf{P}_{B}$. It is easy to see that $\mathbf{P}_{B}$ is in fact a polytope and not a polyhedron because the first constraint tells us that the $p_{i}$ can’t be too large, and therefore $\mathbf{P}_{B}$ is bounded. In fact, because the $P_{i}\geqslant 0$ we can see that $\mathbf{P}_{B}$ must be in the intersection of the first $2^{m}$-tant (the region where all $p_{i}\geqslant 0$) and some hyper-plane. But determining where $\mathbf{P}_{B}$ is in this region is completely non-obvious. For general polytopes with exponentially many facets there are no polynomial time algorithms for inclusion or separation. But, as we will see, there is some extra nice mathematical structure in this situation that we will be able to exploit. The next theorem I want to show you gives us an explicit formula for the Brascamp-Lieb constant.
+
+**Theorem\[Lie90\]:** If $(\mathbf{B}, \mathbf{p})$ is feasible, then
+
+$$
+\text{BL}(\mathbf{B}, \mathbf{p}) = \left[\text{sup}\frac{\prod_{j}(\text{det}(X_{j}))^{p_{j}}}{\text{det}\left(\sum_{j}p_{j}B_{j}^{\dagger}X_{j}B_{j}\right)} \right]^{1/2}
+$$
+
+where the supremum is taken over all PSD matrices $X_{j}$ in dimension $n_{j}$ (note that we are optimizing over all $m$ matrices $X_{j}$ at the same time, a tensor $X$ if you’d like).
+
+So we have an explicit formula for the BL constant. We’re done then, right? That’s just what a mathematician would say, but we are computer scientists! We need to know how to compute such a constant and you’ll notice that this constant is the solution to a non-convex optimization problem. Needless to say, there are no known polynomial time algorithms to solve this kind of problem.
+
+Hopefully now I’ve convinced you that you should not be hoping for a nice algorithm for computing feasibility of $(B,P)$ or for computing $BL(B,P)$. So next I will show you two theorems that might give you an idea of how we are going to do it.
+
+If $B_{j}' = C_{j}B_{j}C$ where $C_{j}\in GL(n_{j})$ and $C\in GL(n)$ then we say $B'$ and $B$ are equivalent.
+
+**Theorem \[BCCT08\]:** Assume $(\mathbf{B}, \mathbf{p})$ and $(\mathbf{B}', \mathbf{p}')$ are equivalent via $C$ and $C_{j}$ as above. Then we have that $\displaystyle \text{BL}(B', p') = \prod_{j}(\text{det}(C_{j}))^{p_{j}}\text{det}(C)\text{BL}(B,P)$ (Note: this is not the form that appears in the original paper but it is equivalent).
+
+**Theorem \[Bar98\]:** A BL datum $(\mathbf{B}, \mathbf{p})$ is called geometric if it satisfies the following two identities,
+
+1.  **Projection:** For every $j\in [m]$, $B_{j}B_{j}^{\dagger} = I_{n_{j}}$.
+2.  **Isotropy:** $\sum_{j}p_{j}B_{j}^{\dagger}B_{j} = I_{n}$.
+
+Every geometric BL datum has $BL(\mathbf{B}, \mathbf{p}) = 1$
+
+So now we can see that all we need to do to compute $BL(B,P)$ is find scaling matrices $C_{j}$ and $C$ that turn $B$ into a geometric datum. Then we can just read off what the constant is from the theorem above.
+
+## Alternate Minimization
+
+So we can see that to turn $B$ into a geometric datum, there are two properties that must be satisfied, projection and isotropy. It is often the case that we have two things we wish to satisfy but we cannot satisfy them both simultaneously in one step. Suppose, for example, that we have some matrix $A$ and we want to find diagonal matrices $D_{1}$ and $D_{2}$ such that $D_{1}AD_{2}$ is doubly stochastic (it’s columns and rows sum to $1$). We don’t know how to find the $D_{1}$ and $D_{2}$ directly from $A$. Of course, the famous solution to this problem is the [Sinkhorn-Knopp scaling algorithm](https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem). You simply re-scale $A$ so that it’s rows each sum to $1$ (a trivial thing to do) and then you re-scale $A$ so that it’s columns each sum to $1$ (again, trivial) and you keep doing this until $A$ is as close to doubly stochastic as you like. It is amazing that this works. In fact, this technique is called alternate minimization and it shows up quite a lot. It can be used to fine a Nash equilibrium in games ([Lemke-Howson algorithm](https://en.wikipedia.org/wiki/Lemke%E2%80%93Howson_algorithm) ), find the MAP estimates for parameters in statistical models given data ([EM algorithm](https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm)), and others.
+
+I think you can see where we are going with this. We have two properties that we wish to satisfy simultaneously. What we will do it first scale $B$ to enforce the projection constraint, then scale $B$ to enforce the isotropy constraint. Then we just stop when $BL(B,p)$ is sufficiently close to $1$.
+
+Let us see how we can enforce each constraint.
+
+1.  Enforce Projection: Let $C_{j} = B_{j}B_{j}^{\dagger}$ and $B_{j} \gets C_{j}^{-1/2}B_{j}$ for all\
+    $j$
+2.  Enforce Isotropy: Let $C =      \sum_{j}p_{j}B_{j}^{\dagger}B_{j}$ and let $B_{j}\gets      B_{j}C$ for all $j$
+
+## AM-GM to the rescue
+
+Ok so we now know the algorithm. But do we know that this algorithm is fast? It is sometimes the case that alternate minimization problems are not polynomial time. In this case, however, we have the following theorem
+
+**Theorem:** If $(B,P)$ is feasible then
+
+1.  $BL(B,p) < \text{exp}\left(O(b \log (bd))\right)$
+2.  $BL(B,p) \geqslant 1$
+3.  if $B'$ is the result of either enforcing isotropy or\
+    enforcing projection then $\frac{BL(B',p)}{BL(B,p)} \leqslant 1 -      \text{poly}\left(\frac{\epsilon}{n d}\right).$
+
+Now, I am not going to prove either the upper of the lower bound. The upper bound comes from invariant theory (You can look at the invariant polynomial for the group action of the general linear group on the transformation $B$ and do some fancy stuff with degree bounds). The second item here just comes from looking at Gaussian which have long been known to be the extremisers (see \[Lie90\]) of Brascamp-Lieb inequalities. It is actually very easy to be convinced of the third item here. All you need is the [AMGM inequality](https://en.wikipedia.org/wiki/Inequality_of_arithmetic_and_geometric_means).
+
+Recall that $\text{det}(X) = \prod_{i}\lambda_{i}$ and $\text{tr}(X) = \sum_{i}\lambda_{i}$ where $\lambda_{i}$ are the eigenvalues of $X$. So an application of the AM-Gm inequality tells us that $\text{det}(X) \leqslant \left(\frac{\text{tr}(X)}{n}\right)^{n}$.
+
+Assume that the projection property is satified and $B'$ is the result of enforcing the isotropy condition. Then we can see that $\frac{BL(B', p)}{BL(B,p)} = \text{det}\left(\sum_{j}p_{j}B_{j}B_{j}^{\dagger}\right) \leqslant \left( \frac{\text{tr}\left(\sum_{j}p_{j}B_{j}B_{j}^{\dagger}\right)}{n}\right)^{n} = \left( \frac{\sum_{j}p_{j}\text{tr}(B_{j}B_{j}^{\dagger})}{n}\right)^{n} = \left( \frac{\sum_{j}p_{j}n_{j}}{n}\right)^{n} = 1$
+
+The other step is done in the exact same manner but you need to apply the AM-GM inequality and then a weighted version of the AM-GM inequality.
+
+## Brascamp-Lieb Polytopes Rank 1 and 2
+
+In general, not much is known about general Brascamp-Lieb polytopes. In fact we only have a complete understanding of them in the rank 1 and rank 2 cases
+
+### Rank 1
+
+Suppose all $B_{j}$ are of the form $\langle v_{j}, x\rangle$ for some $v_{j}\in \mathbb{R}^{n}$ (so $n_{j}=1$ for all $j$).
+
+**Theorem:** $\mathbf{P}_{B} = \text{conv}\{\mathbf{1}_{I}:|I|=n, \{v_{i}\}_{i\in I}\text{ form a basis for }\mathbb{R}^{n}\}$
+
+These polytopes are known as [Matroid Polytopes](https://en.wikipedia.org/wiki/Matroid_polytope). They’re nice, but they are also very simple. For example, a rgeedly algorithm gives us linear time optimization over them. In some mathematical sense they are really the simplest objects of optimization you can imagine.
+
+### Rank 2
+
+Now, suppose that all of the $B_{j}$ are of the form $(\langle v_{j}, x\rangle, \langle w_{j}, x\rangle)$. Then we already get the [Matroid Intersection Polytopes](https://en.wikipedia.org/wiki/Matroid_intersection)
+
+**Theorem:** $\mathbf{P}_{b} = \text{conv}\{\mathbf{1}_{I}:|I|=n, \{v_{i}\}_{i\in I}\text{ and }\{w_{i}\}_{i\in I}\text{ form a basis for }\mathbb{R}^{n}\}$
+
+The proof of this theorem or the previous theorem are quite trivial. I direct the interested reader to \[GGOW17\]
+
+Matroid Intersection polytopes are more interesting from a computational perspective. For example, you can encode the perfect matching problem on bipartite graphs as a matroid intersection problem. Unfortunatly, we already have polynomial time algorithms for matroid intersection. So the techniques discussed here don’t give us anything we didn’t already have.
+
+## Open Problems
+
+1.  A problem that really interests me is, what other types of polytopes can we encode as Brascmap-Lieb polytopes? Can we encode the general matching polytope (or the Edmonds polytope) as a BL polytope?
+
+## References
+
+**\[GGOW17\]** Ankit Garg, Leonid Gurvits, Rafael Oliviera, Avi Wigderson. Algorithmic and optimization aspects of Brascamp-Lieb inequalities, via Operator Scaling. STOC 2017
+
+**\[BCCT08\]** Jonathan Bennett, Anthony Carbery, Michael Christ, and Terence Tao. The BrascampLieb\
+inequalities: finiteness, structure, and extremals. Geometric and Functional Analysis, 17(5):1343–1415, 2008.
+
+**\[Lie90\]** Elliot Lieb. Gaussian kernels have only Gaussian maximizers. Inventiones Mathematicae,\
+102:179–208, 1990.
+
+**\[Bar98\]** Franck Barthe. On a reverse form of the Brascamp–Lieb inequality. Inventiones Mathematicae,\
+134:335–361, 1998.

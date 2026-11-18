@@ -1,0 +1,43 @@
+project:
+  type: website
+  render:
+    - "*.qmd"
+    - "posts/**/*.qmd"
+
+# Which look the site uses unless you pass --profile.
+# Looks live in themes/*.scss and are selected by _quarto-<name>.yml.
+profile:
+  default: editorial
+
+website:
+  title: "Jaden Stock"
+  site-url: https://jadenstock.github.io
+  repo-url: https://github.com/jadenstock/jadenstock.github.io
+  search: true
+  open-graph: true
+  twitter-card: true
+  navbar:
+    title: "Jaden Stock"
+    right:
+      - href: blog.qmd
+        text: Writing
+      - href: links.qmd
+        text: Links
+      - href: about.qmd
+        text: About
+      - icon: github
+        href: https://github.com/jadenstock
+        aria-label: GitHub
+      - icon: linkedin
+        href: https://www.linkedin.com/in/jaden-stock-46071b7a/
+        aria-label: LinkedIn
+  page-footer:
+    left: "© 2026 Jaden Stock"
+    right: "Built with [Quarto](https://quarto.org)"
+
+format:
+  html:
+    toc: true
+    anchor-sections: true
+    code-copy: true
+    smooth-scroll: true

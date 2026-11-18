@@ -1,0 +1,25 @@
+---
+title: "Hello, world"
+description: "A sample post to show how the blog listing, code cells and math render."
+date: 2026-11-17
+image: cover.png
+categories: [meta]
+---
+
+This is a placeholder post. Quarto turns Markdown plus code cells into a page.
+
+## Math and code
+
+Bayes' rule: $P(A\mid B) = \frac{P(B\mid A)P(A)}{P(B)}$
+
+```{python}
+import math
+print([round(math.sin(x / 2), 2) for x in range(5)])
+```
+
+## Diagrams
+
+```{mermaid}
+flowchart LR
+  A[Write .qmd] --> B[git push] --> C[Live]
+```

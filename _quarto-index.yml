@@ -1,0 +1,4 @@
+# Direction C "Index": inspired by Kristjan Oddsson. Huge type, hairline rules, numbered index, one red accent.
+format:
+  html:
+    theme: themes/index.scss

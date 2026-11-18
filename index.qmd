@@ -1,0 +1,47 @@
+---
+pagetitle: "Jaden Stock"
+listing:
+  contents: posts
+  type: default
+  sort: "date desc"
+  categories: true
+  sort-ui: false
+  filter-ui: false
+  date-format: "D MMM YYYY"
+  image-align: left
+  image-placeholder: images/placeholder.png
+page-layout: full
+toc: false
+---
+
+<!-- Placeholder copy. The hero text differs per look (profile) so each can be judged on its own. -->
+
+::: {.content-visible when-profile="quiet"}
+::: hero
+# Hi, I'm Jaden
+
+a software engineer in Seattle.\
+I build agents, search tools and games.\
+I write about algorithms and things I make.
+:::
+:::
+
+::: {.content-visible when-profile="editorial"}
+::: hero
+# Jaden Stock
+
+*applied AI research, agentic systems and algorithms*
+:::
+:::
+
+::: {.content-visible when-profile="index"}
+::: hero
+# Agents, algorithms &amp; <span class="accent">whittling.</span>
+
+::: intro
+<span class="label">№ 01 · Introduction</span>
+
+I'm a software engineer in Seattle. I build agents, search tools and games, and write up the algorithms behind them.
+:::
+:::
+:::

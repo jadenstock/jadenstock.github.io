@@ -1,0 +1,114 @@
+---
+title: "Distributed Network Optimization"
+description: "A talk to the UW CS theory group on distributed optimization and a simple near-optimal distributed minimum spanning tree algorithm."
+date: 2018-03-28
+image: cover.png
+categories: [talks, algorithms]
+---
+
+*Originally published on the [Infinite Ink Well blog](https://infiniteinkwellblog.wordpress.com/2018/03/28/distributed-network-optimization/).*
+
+This post is based on notes for a talk I gave to the UW CS theory group this Autumn.
+
+## Introduction
+
+In this post, I will show you a recent result in distributed algorithms that is elegant and gives a lot of insight into the nature of distributed optimization problems. I will conclude with a simple distributed algorithm for the minimum spanning tree problem that achieves the optimal round complexity up to log factors.
+
+The two main areas in distributed algorithms research are *local* algorithms and *global* algorithms. Historically local algorithms have received far more attention. The quintessential local distributed problem is finding a maximal independent set ([MIS](https://en.wikipedia.org/wiki/Maximal_independent_set)), not to be confused with *maximum* independent set. The problem is to find a set of vertices such that no two vertices in the set are adjacent. Notice how the constraint here is local to each node, rather than the global problem of say, finding the smallest maximal independent set which depends on the full structure of the graph. You may have heard of the classic distributed algorithm for this called [Luby’s algorithm](https://en.wikipedia.org/wiki/Maximal_independent_set#Random-selection_parallel_algorithm_%5BLuby's_Algorithm%5D).
+
+We will instead be looking at global network optimization problems. These are problems where the optimal solution depends on the global structure of the graph. In this area, the canonical problem and the one I will use as an example in this post is the Minimum Spanning Tree ([MST](https://en.wikipedia.org/wiki/Minimum_spanning_tree)) problem. Before we discuss what the state of the art is for global network optimization problems we will introduce the model of computation.
+
+## The model
+
+In distributed computing there a few key models of computation. You’ve probably heard of the Map Reduce model, and for studying local optimization problems (such as MIS) there is the LOCAL model. We will be working in the CONGEST model. In all distributed models each node represents a processor, or some unit capable of doing computation. The difference between the models comes in how these individual units can communicate.
+
+**Def** In the CONGEST model (short for congestion) computation proceeds in rounds subject to the following assumptions.
+
+1.  Each node knows it’s neighbors (by small unique IDs for example)
+2.  Nodes can perform an infinite amount of computation per round.
+3.  Nodes may send $\Theta(\log n)$ bits on each edge, per round.
+
+Each round is three steps. First, each node may send a message to each of its neighbors. Second, each node receives all messages sent to it. Third, each node performs an arbitrary amount of computation. Some authors say that each node can only send the same message along all of its edges and others say they can send a unique message on each edge. It turns out not to matter so much so we use the latter assumption. There are sometimes some other assumptions such as each node has an $n^{\alpha}$ estimate on the size of the graph for some $\alpha$. We won’t use any other assumptions.
+
+The only difference between the CONGEST model and the LOCAL model is assumption 3 above. In the LOCAL model, messages can be any size. By constraining the size of the messages we introduce this problem of congestion, which is that edges can be constrained. It’s a fairly natural assumption because in the real world there are bandwidth problems in communication. Notice how the model is not concerned with how much total computation or *work* it takes to solve a problem but rather communication it takes across the graph (For more on the distinction between these two models see these [notes](http://www.cs.cmu.edu/~haeupler/15859F15/docs/lecture19.pdf)).
+
+*History.* For many years people achieved distributed algorithms for global optimization problems that achieved $\tilde{O}(\sqrt{n} + D)$ rounds. Lower bounds for these problems are also about $\tilde{\Omega}(\sqrt{n} + D)$. The log factors don’t always match up exactly but in this model that doesn’t matter as much (in the LOCAL model log factors matter enormously, or even $\log^{*}$ factors) Where does this $\sqrt{n} + D$ factor come from? We will see shortly. We can now turn our attention to the MST problem.
+
+## Lower Bound
+
+This section is essentially an aside and is not necessary to understand later sections. But the result is kind of neat so I have left it in. There is essentially one paper [\[DSHK\]](https://arxiv.org/pdf/1011.3049.pdf) for understanding lower bounds in the CONGEST model. In this paper, they derive lower bounds for many many problems by first deriving lower bounds for verification problems. Verification in the distributed model is when you are given a subgraph $H\subseteq G$ (meaning each node in $G$ knows if it is in $H$ or not) and you want to determine if the graph satisfies certain properties such as if it’s spanning. An interesting note is that in the distributed setting verification might be harder than construction. This makes sense because verification is essentially a global problem. The broad structure of the [\[DSHK\]](https://arxiv.org/pdf/1011.3049.pdf) paper is
+
+$$
+\text{CC lower bounds} \rightarrow \text{Verification lower bounds} \rightarrow \text{approximation lower bounds}
+$$
+
+where CC is short for communication complexity. The paper is rather technical but I will pick out this one neat argument.
+
+**Lemma:** An $\alpha(n)$ approximation algorithm for MST implies a verification algorithm for connected spanning graph.
+
+**Proof:** A $\alpha(n)$ approximation algorithm $A$ for MST. Given $G$ and $H$ (to be verified), let $G'$ be such that $w(e) = n\alpha(n)$ for $e\notin H$, and $w(e) = 1$ for $e\in H$. Run the algorithm $A$ on the graph $G'$ and output yes if the MST is of size less than $n\alpha(n)$, and no otherwise. It is pretty easy to see that if the answer is yes then we didn’t need to include any edge not in $H$ for our MST and therefore $H$ is a spanning subgraph. $\blacksquare$
+
+That is all I have to say about the lower bound for this problem. The Lower bound follows from the lower bound on distributed verification of connected spanning subgraphs which is in the paper. This argument is actually identical to the argument for why an approximation algorithm for the Travelling Salesman Problem to any factor implies a polynomial time algorithm for the [Hamiltonian Path](https://en.wikipedia.org/wiki/Hamiltonian_path_problem) problem (which is NP complete). It’s a nice argument to have in your theory tool belt.
+
+## Low-Congestion Shortcuts
+
+In many global network optimization problems, we can take a divide and conquer approach and solve the problem on disjoint-connected subgraphs. The problem with this approach is that the diameter of the subgraphs may be large, and in fact much larger than the graph itself! So the idea of low-congestion shortcuts is to just add a few edges from the original graph to each subgraph to reduce the diameter, and therefore reduce how long it takes to communicate on that subgraph.
+
+**Def** Given $G = (V,E)$ and a partition of $V$ into $S_{1}, \cdots, S_{n}\subset V$ such that $G[S_{i}]$ is connected, an $\alpha$-congestion, $\beta$-dilation shortcut is a set of subgraphs $H_{1}, \cdots, H_{n}\subset G$ such that
+
+1.  $(\forall e\in E) |\{i: e\in G[S_{i}] + H_{i}\}| \leqslant \alpha$
+
+
+
+2.  $(\forall i)\text{diam}(G[S_{i}] + H_{i}) \leqslant \beta.$
+
+
+
+The first condition says that no single edge is used in more than $\alpha$ shortcuts and the second condition says that the diameter of each component after adding the shortcuts is no larger than $\beta$. We will henceforth refer to an $\alpha$-congestion $\beta$-dilation shortcut as an $(\alpha, \beta)$-shortcut. We say that a partition *admits* an $(\alpha, \beta)$-shortcut if subgraphs $H_{i}$ can be found for this partition that satisfy the above conditions.
+
+*Technical Note. *Again here to *give* a subgraph means that every node that’s in the subgraph knows it’s in the subgraph.
+
+We now give a very simple but very important lemma.
+
+**Lemma** For any graph with diameter $D$, any partition of that graph admits an $(\alpha, \beta)$-shortcut such that $\text{max}\{\alpha, \beta\} \leqslant O(\sqrt{n} + D)$.
+
+**Proof** Suppose $V$ is partitioned into $\{S_{i}\}$. Then we will let $H_{i} = G$ if $|S_{i}|\geqslant \sqrt{n}$ and $H_{i}=\emptyset$ otherwise. The claim now follows easily because we can see that $\beta = \text{max}\{\sqrt{n}, D\} = O(\sqrt{n}+D)$ and $\alpha \leqslant n/\sqrt{n} + 1 = O(\sqrt{n})$ because there can’t be more than $\sqrt{n}$ components of size greater than size $\sqrt{n}$.
+
+For general graphs, this is almost certainly the best you can do. And in fact, this is essentially the reason that the *correct* answer for many global optimization problems is $\sqrt{n} + D$. Basically, communication on small components can be done quickly and communication on large components just uses a global BFS tree on the graph. So if we’ve simply reproduced the classic results, what was the point? Well, now that we can ask if we can use some additional structure of a graph to get a better shortcut. And indeed the recent results say yes you can.
+
+**Claim:[\[GH’16\]](http://groups.csail.mit.edu/tds/papers/Ghaffari/soda16-planar2.pdf)** In any planar graph with diameter $D$, an $(\alpha, \beta)$-shortcut can be constructed in $\tilde{O}(D)$ rounds with $\text{max}\{\alpha, \beta\} \leqslant O(D \log D)$
+
+and the work [\[HIZ’16\]](https://arxiv.org/abs/1607.07553) extended this to any bounded genus graph. We also have the following result.
+
+**Claim:** Any graph with expansion at least $\frac{1}{\text{poly}(\log n)}$ and max degree less than $\text{poly}(\log n)$, any partition admits an $(\alpha, \beta)$-shortcut with $\max\{\alpha, \beta\}\leqslant 2^{O(\sqrt{\log n \log\log n})}$ and can be constructed in that many rounds.
+
+*Technical Note.* I have not said anything about how many rounds it takes to construct the $(\alpha, \beta)$-shortcut. Basically, we need the construction to be at least $O(\text{max}\{\alpha, \beta\})$ because below that time and it doesn’t change the runtime of our algorithms and beyond that, it would dominate the runtime of our algorithms. In the first lemma for general graphs the construction is quick because usually in each partition there is a leader node that knows the size of the cluster and it can propagate that information to each node in the cluster in time $\sqrt{n} + D$ (called a broadcast) along a BFS tree of that cluster.
+
+We now state and prove a central lemma. This should give you an idea of why $(\alpha, \beta)$-shortcuts are the correct thing to be looking at.
+
+**Lemma:** Given a partitioned graph with an $(\alpha, \beta)$-shortcut, there is a distributed, randomized algorithm to compute all $N$ BFSs, one for each component $G[S_{i}] + H_{i}$, in $O(\alpha + \beta \log n)$ rounds, w.h.p.
+
+**proof:** The proof is the most complicated part of this post. First we need to know how you would find a BFS tree in a full graph in the distributed setting. Starting at the root node, each node in the tree so far sends a BFS token to each of it’s neighbors. If a node receives a token and it is not in the tree then it takes the node that sent the token to be it’s parent. Repeat this process until every node is in the tree. This takes $O(D)$ rounds. We will call this process “growing the BFS tree”. We are now ready to prove the lemma. $\blacksquare$
+
+We will assume that each component has a specified leader node. This turns out not to be a problem as there is always a leader node in the applications we care about. The algorithm will take place of *phases* where each phase consists of $\log(n)$ rounds. Have the leader node of each component choose a random start time in $[0, \alpha/\log n]$. Each component will start growing it’s BFS tree at it’s randomly chosen start time, taking one hop per phase (not per round). So if a node $v$ receives a BFS token from component $k_{i}$ in phase $j$, then in phase $j+1$ it will forward it to all neighbors in $G[S_{i}] + H_{i}$ (just forward to all neighbors and the ones in that component know who they are).
+
+For any BFS the probability that it will go through a particular edge $e$ in any given phase is $\frac{\log n}{\alpha}$ (if the BFS started at time $0$ then the phase in which $e$ is used would be determined. But we started at a randomly chosen time in $[\alpha/\log n]$) and each $e$ is in no more than $\alpha$ BFSs. So in expectation $\log n$ BFSs need to pass through $e$ in any given phase. No more than $O(\log n)$ BFSs need to pass w.h.p. (easily follows from Chernoff bound). All BFSs have started by phase $\alpha/\log(n)$ and take less than $\beta$ phases to complete which means all BFSs will complete by round $\alpha/\log(n) + \beta$ and each phase takes $O(\log n)$ rounds which gives us a total of $O(\alpha + \beta \log n)$ rounds. $\blacksquare$
+
+## MST
+
+We are now finally ready to see the distributed algorithm for constructing a MST. We will be adapting [Boruvka’s classic algorithm](https://en.wikipedia.org/wiki/Bor%C5%AFvka%27s_algorithm) from 1926. That algorithm is very simple. Start with each node as it’s own component. Then in each round add the minimum outgoing edge from each component to the MST. Such an edge is guaranteed to be in the MST by the edge-inclusion lemma. Stop when there is only one component. There are just a few technical details to make this work in the distributed setting
+
+**Theorem:** For any $G$ such that for any partition of $G$ we can find an $(\alpha, \beta)$-shortcut with $\text{max}\{\alpha, \beta\}\leqslant K$, there is a randomized and distributed algorithm for computing a MST on $G$ in $O(\alpha \log n + \beta \log^2 n) = \tilde{O}(k)$ round.\
+**Proof:**\
+As in Boruvka’s algorithm, initially, each node is its own component. For $\log n$ phases do the following steps:
+
+1.  Each component leader flips a fair coin and communicates the result of this flip to all nodes in the component using the random delays method from the above lemma.
+2.  Find the minimum outgoing edge. Each node in the component knows it’s own minimum outgoing edge. Then each node propagates this information back to the leader using a convergecast (along the same BFS tree that was constructed for step 1. Then the leader node broadcasts what the minimum outgoing edge is to all nodes in the component.
+3.  This minimum outgoing edge connects two components. Only if one component flipped a tails and the other flipped a heads is the merge actually performed. In this case the leader node that flipped a heads becomes the leader of both components. Then let each node in both clusters know it’s new leader by again performing a series of convergecasts and broadcasts similar to in step 2.
+
+The probability of two clusters merging is $1/4$, so in expectation each round gets rid of $1/4$ of the number of total clusters. So in order to get down to a single cluster we only need $O(\log n)$ rounds. Each of the above three steps takes only $O(\alpha + \beta \log n)$ time by the above lemma, and so the total number of rounds for the algorithm is $O(\alpha \log n + \beta \log^2 n)$. $\blacksquare$
+
+## Further reading
+
+- Mohsen Ghaffari’s [PhD Thesis](https://groups.csail.mit.edu/tds/papers/Ghaffari/PhDThesis-Ghaffari.pdf)
+- These [slides](http://www.mapsp2017.ma.tum.de/MAPSP2017-Haeupler.pdf) on low-congestion shortcuts

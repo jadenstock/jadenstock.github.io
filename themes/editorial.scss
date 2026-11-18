@@ -1,0 +1,51 @@
+/*-- scss:defaults --*/
+// Direction B "Editorial" (after Isabella Velasquez): serif, dark top bar, red accent, thumbnails.
+$body-bg: #ffffff;
+$body-color: #333536;
+$link-color: #d63a2a;
+$link-decoration: none;
+$link-hover-color: #a82314;
+$font-family-sans-serif: "Crimson Pro", Georgia, "Times New Roman", serif;
+$font-family-base: "Crimson Pro", Georgia, "Times New Roman", serif;
+$font-size-base: 1.2rem;
+$headings-font-weight: 600;
+$headings-color: #2b2d2e;
+$navbar-bg: #0e0e0e;
+$navbar-fg: #ffffff;
+$navbar-hl: #ff7a6a;
+
+/*-- scss:rules --*/
+:root { --font-head: "Space Grotesk", sans-serif; --font-body: "Newsreader", Georgia, serif; --body-size: 18px; --accent: #d63a2a; --muted: #77797a; --thumb-w: 260px; --thumb-h: 173px; }
+body { font-family: var(--font-body); font-size: var(--body-size); }
+h1, h2, h3, h4, h5, h6, .navbar-title, .quarto-post .listing-title, .hero h1, h1.title { font-family: var(--font-head); }
+.navbar .nav-link, .hero p { font-family: var(--font-body); }
+.navbar { box-shadow: none; }
+.navbar-title { font-size: 1.5rem; font-weight: 600; letter-spacing: .01em; }
+.navbar .nav-link { font-size: 1.05rem; }
+a:hover { text-decoration: underline; }
+
+.hero { margin: 2rem 0 1.5rem; }
+.hero h1 { font-size: 2.6rem; font-weight: 600; margin: 0; border: 0; }
+.hero p { color: var(--muted); font-size: 1.25rem; margin: .2rem 0 0; }
+
+// Post list: thumbnail floats left; red serif title, description, date stack beside it.
+.quarto-post { display: block !important; padding: 1.4rem 0 !important; border: 0 !important; overflow: hidden; }
+.quarto-post .thumbnail { float: left; width: var(--thumb-w); height: var(--thumb-h); margin: 0 1.8rem 0 0; }
+.quarto-post .thumbnail img, .quarto-post .thumbnail .listing-item-img-placeholder { width: var(--thumb-w); height: var(--thumb-h); margin: 0; object-fit: cover; border-radius: 4px; }
+@media (max-width: 640px) {
+  .quarto-post .thumbnail { float: none; width: 100%; height: auto; margin: 0 0 .8rem; }
+  .quarto-post .thumbnail img, .quarto-post .thumbnail .listing-item-img-placeholder { width: 100%; height: auto; aspect-ratio: 3 / 2; }
+}
+.quarto-post .body { display: block; }
+.quarto-post .metadata { display: block; padding: 0; margin: 0; }
+.quarto-post .listing-title { font-size: 1.55rem; font-weight: 600; margin: 0 0 .35rem; line-height: 1.2; }
+.quarto-post .listing-title a { color: var(--accent); }
+.quarto-post .listing-description { margin: 0 0 .3rem; text-align: left; }
+.quarto-post .listing-description p { margin: 0; }
+.quarto-post .listing-description, .quarto-post .listing-description a { color: #333536; font-size: 1.15rem; text-decoration: none; }
+.quarto-post .listing-date { font-size: .95rem; color: var(--muted); }
+.quarto-post .listing-categories { display: none !important; }
+#quarto-margin-sidebar h5 { font-weight: 600; font-size: 1.1rem; }
+.quarto-listing-category .category { font-size: 1.05rem; color: #333536; }
+h1.title { font-size: 2.3rem; }
+.nav-footer { color: var(--muted); border-top: 1px solid #e6e6e6; font-size: .95rem; }

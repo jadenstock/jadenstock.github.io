@@ -1,0 +1,47 @@
+/*-- scss:defaults --*/
+// Direction C "Index" (after Kristjan Oddsson): big bold type, hairline rules, numbered index, one red accent.
+$body-bg: #ffffff;
+$body-color: #0a0a0a;
+$link-color: #0a0a0a;
+$link-decoration: none;
+$link-hover-color: #c9300a;
+$font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-monospace: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+$font-size-base: 1rem;
+$headings-font-weight: 800;
+$navbar-bg: #ffffff;
+$navbar-fg: #0a0a0a;
+$navbar-hl: #c9300a;
+
+/*-- scss:rules --*/
+:root { --accent: #c9300a; --muted: #6a6a66; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.navbar { border-bottom: 2px solid #0a0a0a; box-shadow: none; }
+.navbar-title { font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.navbar .nav-link { font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.navbar .nav-link.active { color: var(--accent) !important; }
+a:hover { color: var(--accent); }
+
+.hero { margin: 2.5rem 0 2rem; display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; align-items: end; }
+.hero h1 { grid-column: 1; font-size: clamp(3rem, 9vw, 7.2rem); line-height: .88; letter-spacing: -.045em; font-weight: 800; text-transform: uppercase; margin: 0; border: 0; }
+.hero .accent { color: var(--accent); }
+.hero .intro { grid-column: 2; font-size: 1.05rem; line-height: 1.55; }
+.hero .intro .label { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .6rem; }
+.hero .intro p { margin: 0; }
+@media (max-width: 800px) { .hero { grid-template-columns: 1fr; } .hero .intro { grid-column: 1; } }
+
+// Post list: 01 | TITLE + description | date, with hairline rules.
+.quarto-listing-default .list { counter-reset: post; border-top: 2px solid #0a0a0a; margin-top: 1rem; }
+.quarto-post { counter-increment: post; display: grid !important; grid-template-columns: 3rem 1fr 8rem; grid-template-areas: "num body date"; gap: 0 1rem; padding: 1.15rem 0 !important; border: 0 !important; border-bottom: 1px solid #0a0a0a !important; align-items: baseline; }
+.quarto-post::before { content: counter(post, decimal-leading-zero); grid-area: num; font-family: var(--mono); font-size: .8rem; }
+.quarto-post .thumbnail { display: none !important; }
+.quarto-post .body { grid-area: body; }
+.quarto-post .metadata { grid-area: date; text-align: right; }
+.quarto-post .listing-title, .quarto-post .listing-title a { font-weight: 700 !important; }
+.quarto-post .listing-title { font-size: 1.1rem; text-transform: uppercase; letter-spacing: .005em; margin: 0 0 .25rem; }
+.quarto-post .listing-description, .quarto-post .listing-description a { font-size: .85rem; color: var(--muted); text-decoration: none; }
+.quarto-post .listing-date { font-family: var(--mono); font-size: .8rem; color: var(--muted); }
+.quarto-post .listing-categories { display: none !important; }
+body:has(.quarto-listing) #quarto-margin-sidebar { display: none !important; }
+body:has(.quarto-listing) main.content, body:has(.quarto-listing) header#title-block-header { grid-column: page-start / page-end !important; }
+h1.title { font-size: 2.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: -.03em; line-height: 1; }
+.nav-footer { border-top: 2px solid #0a0a0a; color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; }

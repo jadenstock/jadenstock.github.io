@@ -1,0 +1,31 @@
+---
+title: "Links"
+toc: false
+---
+
+## Find me
+
+- [GitHub](https://github.com/jadenstock)
+- [LinkedIn](https://www.linkedin.com/in/jaden-stock-46071b7a/)
+- [Old WordPress blog](https://jadenstock.wordpress.com/)
+
+## Featured projects
+
+### [deep-researcher](https://github.com/jadenstock/deep-researcher)
+
+An agentic deep-research system built on pydantic-ai. A top-level researcher agent scouts the terrain, then dispatches analyst sub-agents (which dispatch their own scouts) against focused sub-questions. Agents share a note graph, and every claim in the final report traces back to a verbatim quote from a source they actually read. Includes cross-model-family verification and a live WebSocket UI.
+
+### [whittling-planner](https://github.com/jadenstock/whittling-planner)
+
+CAM for a person with a knife. Pick a block of wood and a design, and it plans how to orient the block, how to mark it with a pencil and ruler, and what to carve at each stage, shown in 3D. Designs are signed distance functions, and a grain check flags short-grain weak spots. It also has a gallery of 19 designs and a guide to the knife cuts.
+
+### [hex-tic-tac-toe](https://github.com/jadenstock/hex-tic-tac-toe)
+
+A web app for hexagonal tic-tac-toe on an infinite pan-and-zoom board, with six in a row to win. It has live multiplayer over WebSockets on an AWS backend, and I wrote greedy and MCTS bots for it.
+
+## More projects
+
+- [**MCTS-for-UTTT**](https://github.com/jadenstock/MCTS-for-UTTT): MCTS agent and interactive front end for Ultimate Tic-Tac-Toe.
+- [**CocktailDevelopmentAssistant**](https://github.com/jadenstock/CocktailDevelopmentAssistant): agentic cocktail development that plugs into your bar inventory on Notion.
+- [**payment-graphs**](https://github.com/jadenstock/payment-graphs): simplify payments between many parties.
+- [PokerPlayerTypes](https://github.com/jadenstock/PokerPlayerTypes) · [ERLGAN](https://github.com/jadenstock/ERLGAN) · [SumProduct](https://github.com/jadenstock/SumProduct) · [HMMs](https://github.com/jadenstock/HMMs) · [Planar-Graph-Embeddings](https://github.com/jadenstock/Planar-Graph-Embeddings)
