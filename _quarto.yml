@@ -41,3 +41,4 @@ format:
     anchor-sections: true
     code-copy: true
     smooth-scroll: true
+    include-after-body: themes/goatcounter.html
